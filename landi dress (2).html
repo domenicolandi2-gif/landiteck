@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="it" class="h-full scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landi Dress - Moda Sostenibile & Tech</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        eco: {
+                            50: '#f2f8f4',
+                            100: '#e1f0e6',
+                            200: '#c3e1cd',
+                            500: '#2e7d32',
+                            600: '#236327',
+                            700: '#1b5e20',
+                            800: '#154a1a',
+                            900: '#0f3812',
+                        },
+                        tech: {
+                            50: '#f0f7ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#075985',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+        }
+        /* Custom scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f2f8f4;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2e7d32;
+            border-radius: 4px;
+        }
+        /* Smooth fade-in animation for views */
+        .animate-fade-in {
+            animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-eco-50 text-slate-800 min-h-full flex flex-col antialiased selection:bg-eco-500 selection:text-white relative">
+
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col space-y-3 max-w-sm w-full pointer-events-none px-4 sm:px-0"></div>
+
+    <header class="bg-white/85 backdrop-blur-md sticky top-0 z-40 border-b border-eco-100 shadow-sm transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3 cursor-pointer group" onclick="switchView('home')">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-eco-700 via-eco-600 to-emerald-400 flex items-center justify-center text-white shadow-md shadow-eco-500/20 group-hover:scale-105 transition-transform">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+                </div>
+                <div>
+                    <span class="text-xl font-extrabold tracking-tight text-eco-900 block leading-tight">Landi <span class="text-eco-600 font-normal">Dress</span></span>
+                    <span class="block text-[10px] tracking-widest uppercase text-eco-600 font-bold">AI Sustainable Fashion</span>
+                </div>
+            </div>
+            <nav class="hidden lg:flex items-center space-x-1">
+                <button onclick="switchView('home')" id="nav-btn-home" class="px-3.5 py-2 rounded-xl text-sm font-semibold transition-all bg-eco-100 text-eco-900">Home</button>
+                <button onclick="switchView('maglie')" id="nav-btn-maglie" class="px-3.5 py-2 rounded-xl text-sm font-medium transition-all text-slate-600 hover:text-eco-900 hover:bg-eco-50">Maglie</button>
+                <button onclick="switchView('pantaloni')" id="nav-btn-pantaloni" class="px-3.5 py-2 rounded-xl text-sm font-medium transition-all text-slate-600 hover:text-eco-900 hover:bg-eco-50">Pantaloni</button>
+                <button onclick="switchView('calzini')" id="nav-btn-calzini" class="px-3.5 py-2 rounded-xl text-sm font-medium transition-all text-slate-600 hover:text-eco-900 hover:bg-eco-50">Calzini</button>
+                <button onclick="switchView('scarpe')" id="nav-btn-scarpe" class="px-3.5 py-2 rounded-xl text-sm font-medium transition-all text-slate-600 hover:text-eco-900 hover:bg-eco-50">Scarpe</button>
+                <button onclick="switchView('cerimonia')" id="nav-btn-cerimonia" class="px-3.5 py-2 rounded-xl text-sm font-medium transition-all text-slate-600 hover:text-eco-900 hover:bg-eco-50">Abiti da Cerimonia</button>
+            </nav>
+            <div class="hidden sm:flex items-center space-x-3">
+                <div id="auth-buttons-guest" class="flex items-center space-x-2">
+                    <button onclick="openAuthModal('login')" class="px-4 py-2 text-sm font-semibold text-eco-700 hover:text-eco-900 hover:bg-eco-50 rounded-xl transition-all">Accedi</button>
+                    <button onclick="openAuthModal('register')" class="px-4 py-2 text-sm font-semibold bg-eco-600 hover:bg-eco-700 text-white rounded-xl shadow-md shadow-eco-600/20 hover:shadow-lg transition-all transform hover:-translate-y-0.5">
+                        Registrati
+                    </button>
+                </div>
+
+                <div id="auth-user-menu" class="relative hidden">
+                    <button onclick="toggleUserDropdown()" class="flex items-center space-x-2.5 p-1.5 pl-3 rounded-2xl border border-eco-200 bg-eco-50/80 hover:bg-eco-100 transition-all focus:outline-none">
+                        <div class="text-left">
+                            <span id="user-display-name" class="block text-xs font-bold text-eco-900 leading-none">Utente</span>
+                            <span id="user-eco-points" class="inline-flex items-center text-[10px] font-semibold text-eco-600 mt-0.5">
+                            </span>
+                        </div>
+                        <div class="w-8 h-8 rounded-xl bg-eco-700 text-white flex items-center justify-center font-bold text-xs shadow-sm" id="user-avatar-initials">
+                            U
+                        </div>
+                        <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+
+                    <!-- Dropdown Menu -->
+                    <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-eco-100 py-2 z-50 animate-fade-in">
+                        <div class="px-4 py-2 border-b border-slate-100">
+                            <p class="text-xs text-slate-400 font-medium">Connesso come</p>
+                            <p id="dropdown-user-email" class="text-xs font-semibold text-eco-900 truncate">email@example.com</p>
+                        </div>
+                        <button onclick="openProfileModal()" class="w-full text-left px-4 py-2.5 text-xs font-semibold text-slate-700 hover:bg-eco-50 hover:text-eco-900 flex items-center space-x-2 transition-colors">
+                            <svg class="w-4 h-4 text-eco-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                            <span>Il Mio Profilo & Punti</span>
+                        </button>
+                        <button onclick="openProfileModal('wishlist')" class="w-full text-left px-4 py-2.5 text-xs font-semibold text-slate-700 hover:bg-eco-50 hover:text-eco-900 flex items-center space-x-2 transition-colors">
+                            <svg class="w-4 h-4 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                            <span>I Miei Preferiti (<span id="wishlist-count-badge">0</span>)</span>
+                        </button>
+                        <div class="border-t border-slate-100 my-1"></div>
+                        <button onclick="logout()" class="w-full text-left px-4 py-2 text-xs font-semibold text-red-600 hover:bg-red-50 flex items-center space-x-2 transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                            <span>Disconnetti</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <div class="lg:hidden flex items-center space-x-2">
+                <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="p-2.5 rounded-xl text-slate-600 hover:bg-eco-100 focus:outline-none transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Expandable -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-white border-b border-eco-100 px-4 pt-2 pb-6 space-y-2 shadow-xl animate-fade-in">
+            <div class="space-y-1">
+                <button onclick="switchView('home'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-xl text-sm font-semibold text-eco-900 bg-eco-50">Home</button>
+                <button onclick="switchView('maglie'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-xl text-sm font-medium text-slate-600 hover:bg-eco-50">Maglie</button>
+                <button onclick="switchView('pantaloni'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-xl text-sm font-medium text-slate-600 hover:bg-eco-50">Pantaloni</button>
+                <button onclick="switchView('calzini'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-xl text-sm font-medium text-slate-600 hover:bg-eco-50">Calzini</button>
+                <button onclick="switchView('scarpe'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-xl text-sm font-medium text-slate-600 hover:bg-eco-50">Scarpe</button>
+                <button onclick="switchView('cerimonia'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-xl text-sm font-medium text-slate-600 hover:bg-eco-50">Abiti da Cerimonia</button>
+            </div>
+            
+            <div class="border-t border-eco-100 pt-3">
+                <div id="mobile-guest-actions" class="flex flex-col space-y-2">
+                    <button onclick="openAuthModal('login'); toggleMobileMenu();" class="w-full py-2.5 text-center text-sm font-semibold text-eco-800 bg-eco-50 rounded-xl">Accedi</button>
+                    <button onclick="openAuthModal('register'); toggleMobileMenu();" class="w-full py-2.5 text-center text-sm font-semibold bg-eco-600 text-white rounded-xl shadow">Registrati (+150 Punti)</button>
+                </div>
+                <div id="mobile-user-actions" class="hidden space-y-2">
+                    <div class="px-3 py-2 bg-eco-50 rounded-xl flex justify-between items-center">
+                        <div>
+                            <span id="mobile-user-name" class="block text-sm font-bold text-eco-900">Utente</span>
+                            <span id="mobile-user-points" class="text-xs font-medium text-eco-600">🌱 150 Eco-Punti</span>
+                        </div>
+                        <button onclick="openProfileModal(); toggleMobileMenu();" class="px-3 py-1 bg-eco-600 text-white rounded-lg text-xs font-semibold">Profilo</button>
+                    </div>
+                    <button onclick="logout(); toggleMobileMenu();" class="w-full py-2 text-center text-xs font-semibold text-red-600 bg-red-50 rounded-xl">Disconnetti</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- VIEW 1: HOME -->
+        <div id="view-home" class="space-y-10 animate-fade-in">
+            
+            <!-- Hero Banner -->
+            <div class="relative rounded-3xl overflow-hidden bg-gradient-to-r from-eco-900 via-eco-800 to-eco-700 text-white shadow-xl">
+                <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                <div class="relative px-6 py-12 sm:px-12 sm:py-16 lg:py-20 max-w-3xl space-y-6">
+                    <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-eco-100 text-xs font-semibold tracking-wide border border-white/20">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span>Tecnologia IA & Economia Circolare</span>
+                    </div>
+                    <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight">
+                        Benvenuti in Landi Dress
+                    </h1>
+                    <p class="text-base sm:text-xl text-eco-100 font-light leading-relaxed">
+                        Siamo un'azienda leader nel settore del vestiario sostenibile. Sfruttando materiali esausti ed energia rinnovabile, creiamo capi d'abbigliamento unici che rispettano l'ambiente senza rinunciare allo stile.
+                    </p>
+                    <div class="pt-2 flex flex-wrap gap-4">
+                        <button onclick="switchView('maglie')" class="px-6 py-3.5 rounded-xl bg-white text-eco-900 font-bold text-sm shadow-lg hover:bg-eco-50 transition-all transform hover:-translate-y-0.5">
+                            Esplora Collezioni
+                        </button>
+                        <a href="#materials-table" class="px-6 py-3.5 rounded-xl bg-white/10 border border-white/20 text-white font-semibold text-sm hover:bg-white/20 transition-all">
+                            Scopri i Materiali
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Categories Showcase Grid -->
+            <div>
+                <div class="flex justify-between items-end mb-6">
+                    <div>
+                        <h2 class="text-2xl font-extrabold text-eco-900 tracking-tight">Le Nostre Categorie</h2>
+                        <p class="text-sm text-slate-600 mt-1">Seleziona una categoria per scoprire i prodotti rigenerati con intelligenza artificiale</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                    
+                    <!-- Card Maglie -->
+                    <div onclick="switchView('maglie')" class="group cursor-pointer bg-white p-6 rounded-2xl border border-eco-100 shadow-sm hover:shadow-md hover:border-eco-500 transition-all flex flex-col justify-between">
+                        <div class="w-12 h-12 rounded-2xl bg-eco-50 text-eco-600 flex items-center justify-center mb-4 group-hover:bg-eco-600 group-hover:text-white transition-colors shadow-xs">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-eco-900 text-lg group-hover:text-eco-600 transition-colors">Maglie</h3>
+                            <p class="text-xs text-slate-500 mt-1">Felpe e filati casual morbidi</p>
+                        </div>
+                        <div class="mt-4 flex items-center text-xs font-semibold text-eco-600">
+                            <span>Vedi prodotti</span>
+                            <svg class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </div>
+                    </div>
+
+                    <!-- Card Pantaloni -->
+                    <div onclick="switchView('pantaloni')" class="group cursor-pointer bg-white p-6 rounded-2xl border border-eco-100 shadow-sm hover:shadow-md hover:border-eco-500 transition-all flex flex-col justify-between">
+                        <div class="w-12 h-12 rounded-2xl bg-eco-50 text-eco-600 flex items-center justify-center mb-4 group-hover:bg-eco-600 group-hover:text-white transition-colors shadow-xs">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-eco-900 text-lg group-hover:text-eco-600 transition-colors">Pantaloni</h3>
+                            <p class="text-xs text-slate-500 mt-1">Tessuti tecnici riciclati</p>
+                        </div>
+                        <div class="mt-4 flex items-center text-xs font-semibold text-eco-600">
+                            <span>Vedi prodotti</span>
+                            <svg class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </div>
+                    </div>
+
+                    <!-- Card Calzini -->
+                    <div onclick="switchView('calzini')" class="group cursor-pointer bg-white p-6 rounded-2xl border border-eco-100 shadow-sm hover:shadow-md hover:border-eco-500 transition-all flex flex-col justify-between">
+                        <div class="w-12 h-12 rounded-2xl bg-eco-50 text-eco-600 flex items-center justify-center mb-4 group-hover:bg-eco-600 group-hover:text-white transition-colors shadow-xs">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-eco-900 text-lg group-hover:text-eco-600 transition-colors">Calzini</h3>
+                            <p class="text-xs text-slate-500 mt-1">Comfort e filati selezionati</p>
+                        </div>
+                        <div class="mt-4 flex items-center text-xs font-semibold text-eco-600">
+                            <span>Vedi prodotti</span>
+                            <svg class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </div>
+                    </div>
+
+                    <!-- Card Scarpe -->
+                    <div onclick="switchView('scarpe')" class="group cursor-pointer bg-white p-6 rounded-2xl border border-eco-100 shadow-sm hover:shadow-md hover:border-eco-500 transition-all flex flex-col justify-between">
+                        <div class="w-12 h-12 rounded-2xl bg-eco-50 text-eco-600 flex items-center justify-center mb-4 group-hover:bg-eco-600 group-hover:text-white transition-colors shadow-xs">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-eco-900 text-lg group-hover:text-eco-600 transition-colors">Scarpe</h3>
+                            <p class="text-xs text-slate-500 mt-1">Plastica oceanica post-consumo</p>
+                        </div>
+                        <div class="mt-4 flex items-center text-xs font-semibold text-eco-600">
+                            <span>Vedi prodotti</span>
+                            <svg class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </div>
+                    </div>
+
+                    <!-- Card Cerimonia -->
+                    <div onclick="switchView('cerimonia')" class="group cursor-pointer bg-white p-6 rounded-2xl border border-eco-100 shadow-sm hover:shadow-md hover:border-eco-500 transition-all flex flex-col justify-between">
+                        <div class="w-12 h-12 rounded-2xl bg-eco-50 text-eco-600 flex items-center justify-center mb-4 group-hover:bg-eco-600 group-hover:text-white transition-colors shadow-xs">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-eco-900 text-lg group-hover:text-eco-600 transition-colors">Cerimonia</h3>
+                            <p class="text-xs text-slate-500 mt-1">Eleganza ad impatto zero</p>
+                        </div>
+                        <div class="mt-4 flex items-center text-xs font-semibold text-eco-600">
+                            <span>Vedi prodotti</span>
+                            <svg class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Tech AI Banner -->
+            <div class="bg-white rounded-3xl p-8 sm:p-10 border border-eco-100 shadow-sm flex flex-col md:flex-row items-center justify-between gap-8">
+                <div class="space-y-3 max-w-xl">
+                    <div class="inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-wider text-tech-600 bg-tech-50 px-3 py-1 rounded-full">
+                        <span>Innovazione Tecnologica IA</span>
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-eco-900">Rigenerazione intelligente con IA</h2>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        I nostri materiali di recupero sfruttano un nuovo metodo di rigenerazione dei materiali favorendo i costi e sfruttando macchine con tecnologie IA avanzate per ridurre al minimo lo spreco d'acqua e l'impronta di carbonio.
+                    </p>
+                </div>
+                <div class="w-full md:w-auto flex-shrink-0">
+                    <div class="bg-gradient-to-br from-eco-50 to-emerald-100 p-6 rounded-2xl border border-eco-200 text-center space-y-1 shadow-inner">
+                        <span class="block text-4xl font-black text-eco-700">-85%</span>
+                        <span class="block text-xs uppercase tracking-wider text-slate-600 font-bold">Emissioni CO2 Ridotte</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Materials Table Section -->
+            <div id="materials-table" class="bg-white rounded-3xl p-6 sm:p-8 border border-eco-100 shadow-sm space-y-6">
+                <div>
+                    <h2 class="text-2xl font-bold text-eco-900 tracking-tight">I Nostri Materiali di Recupero</h2>
+                    <p class="text-sm text-slate-600 mt-1">Trasparenza totale sulla provenienza e sugli utilizzi dei nostri filati ecologici.</p>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-eco-100 text-xs font-bold uppercase tracking-wider text-eco-900 bg-eco-50/70">
+                                <th class="py-4 px-4 rounded-l-xl">Materiale</th>
+                                <th class="py-4 px-4">Provenienza</th>
+                                <th class="py-4 px-4 rounded-r-xl">Utilizzo nei Vestiari</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-sm">
+                            <tr class="hover:bg-eco-50/50 transition-colors">
+                                <td class="py-4 px-4 font-semibold text-eco-900 flex items-center space-x-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                                    <span>Plastica riciclata</span>
+                                </td>
+                                <td class="py-4 px-4 text-slate-600">Bottiglie di plastica post-consumo</td>
+                                <td class="py-4 px-4 text-slate-600">Fibre per giacche, pile e tessuti tecnici</td>
+                            </tr>
+                            <tr class="hover:bg-eco-50/50 transition-colors">
+                                <td class="py-4 px-4 font-semibold text-eco-900 flex items-center space-x-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                                    <span>Cotone rigenerato</span>
+                                </td>
+                                <td class="py-4 px-4 text-slate-600">Scarti di tessitura e vecchi indumenti</td>
+                                <td class="py-4 px-4 text-slate-600">Filati per maglieria e felpe casual</td>
+                            </tr>
+                            <tr class="hover:bg-eco-50/50 transition-colors">
+                                <td class="py-4 px-4 font-semibold text-eco-900 flex items-center space-x-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                                    <span>Poliestere riciclato</span>
+                                </td>
+                                <td class="py-4 px-4 text-slate-600">Reti da pesca abbandonate e rifiuti industriali</td>
+                                <td class="py-4 px-4 text-slate-600">Abbigliamento sportivo e costumi da bagno</td>
+                            </tr>
+                            <tr class="hover:bg-eco-50/50 transition-colors">
+                                <td class="py-4 px-4 font-semibold text-eco-900 flex items-center space-x-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                                    <span>Lana riciclata</span>
+                                </td>
+                                <td class="py-4 px-4 text-slate-600">Abiti in lana dismessi</td>
+                                <td class="py-4 px-4 text-slate-600">Cappotti, coperte e maglioni invernali</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="view-category" class="hidden space-y-8 animate-fade-in">
+            <!-- Header Categoria -->
+            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-eco-100 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div>
+                    <button onclick="switchView('home')" class="inline-flex items-center text-xs font-bold text-eco-600 hover:text-eco-900 mb-3 group">
+                        <svg class="w-4 h-4 mr-1 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                        Torna alla Home
+                    </button>
+                    <h1 id="cat-title" class="text-3xl font-extrabold text-eco-900 tracking-tight">Categoria</h1>
+                    <p id="cat-desc" class="text-sm text-slate-600 mt-1 max-w-2xl">Esplora la nostra selezione creata con processi IA sostenibili.</p>
+                </div>
+                <div class="flex items-center space-x-3 bg-eco-50 p-3 rounded-2xl border border-eco-200 shrink-0">
+                    <span class="w-3 h-3 rounded-full bg-emerald-500 animate-ping"></span>
+                    <span class="text-xs font-bold text-eco-900">100% Sostenibile & Certificato IA</span>
+                </div>
+            </div>
+
+            <div id="cat-products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-eco-900 text-white border-t border-eco-800 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="space-y-3">
+                    <span class="text-xl font-bold tracking-tight text-white block">Landi <span class="text-emerald-400 font-light">Dress</span></span>
+                    <p class="text-xs text-eco-200 leading-relaxed">
+                        Pionieri della moda circolare guidata dall'intelligenza artificiale. Trasformiamo gli scarti in stile consapevole.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-400 mb-3">Sostenibilità & IA</h4>
+                    <ul class="space-y-2 text-xs text-eco-200">
+                        <li>• Processo ad impatto zero</li>
+                        <li>• Tracciabilità dei materiali</li>
+                        <li>• Algoritmi di ottimizzazione tessile</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-400 mb-3">Incentivo Eco-Reward</h4>
+                    <p class="text-xs text-eco-200 mb-3">Registrati ora per ricevere 150 Punti Eco da convertire in sconti sugli acquisti sostenibili.</p>
+                    <button onclick="openAuthModal('register')" class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-eco-900 font-bold text-xs transition-colors">
+                        Unisciti alla Rivoluzione
+                    </button>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-eco-800 text-center text-[11px] text-eco-200">
+                &copy; 2026 Landi Dress S.p.A. - Tutti i diritti riservati.
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL AUTHENTICATION (Registrati & Accedi) -->
+    <div id="auth-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
+        <div class="bg-white rounded-3xl max-w-md w-full shadow-2xl overflow-hidden border border-eco-100 transform transition-all">
+            
+            <!-- Modal Header / Tabs -->
+            <div class="bg-eco-50/80 p-4 border-b border-eco-100 flex justify-between items-center relative">
+                <div class="flex space-x-2 bg-white/80 p-1 rounded-2xl border border-eco-200 w-full mr-8">
+                    <button id="tab-btn-register" onclick="switchAuthTab('register')" class="w-1/2 py-2 rounded-xl text-xs font-bold transition-all bg-eco-600 text-white shadow-xs">Registrati</button>
+                    <button id="tab-btn-login" onclick="switchAuthTab('login')" class="w-1/2 py-2 rounded-xl text-xs font-bold transition-all text-slate-600 hover:text-eco-900">Accedi</button>
+                </div>
+                <button onclick="closeAuthModal()" class="text-slate-400 hover:text-slate-600 p-1.5 rounded-xl hover:bg-white transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+
+            <div class="p-6 sm:p-8">
+                <!-- FORM REGISTRAZIONE -->
+                <form id="form-register" onsubmit="handleRegister(event)" class="space-y-4">
+                    <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-3 flex items-center space-x-3 mb-2">
+                        <span class="text-xl">🎁</span>
+                        <div>
+                            <p class="text-xs font-bold text-emerald-900">+150 Punti Eco-Reward in Omaggio</p>
+                            <p class="text-[11px] text-emerald-700">Validi subito per la tua prima esperienza eco-friendly.</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Nome e Cognome *</label>
+                        <input type="text" id="reg-name" required placeholder="Es. Mario Rossi" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-200 focus:border-eco-500 focus:ring-2 focus:ring-eco-500/20 outline-none transition-all">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Indirizzo Email *</label>
+                        <input type="email" id="reg-email" required placeholder="mario.rossi@example.com" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-200 focus:border-eco-500 focus:ring-2 focus:ring-eco-500/20 outline-none transition-all">
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Password *</label>
+                            <input type="password" id="reg-pass" required minlength="6" placeholder="Min. 6 caratteri" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-200 focus:border-eco-500 focus:ring-2 focus:ring-eco-500/20 outline-none transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Conferma *</label>
+                            <input type="password" id="reg-pass-confirm" required minlength="6" placeholder="Ripeti password" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-200 focus:border-eco-500 focus:ring-2 focus:ring-eco-500/20 outline-none transition-all">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Categoria Preferita</label>
+                        <select id="reg-fav-cat" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-200 focus:border-eco-500 focus:ring-2 focus:ring-eco-500/20 outline-none transition-all bg-white">
+                            <option value="Maglie">Maglie & Felpe</option>
+                            <option value="Pantaloni">Pantaloni Tecnici</option>
+                            <option value="Calzini">Calzini Comfort</option>
+                            <option value="Scarpe">Scarpe Eco-3D</option>
+                            <option value="Cerimonia">Abiti da Cerimonia</option>
+                        </select>
+                    </div>
+
+                    <div class="space-y-2 pt-1">
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="checkbox" required class="rounded text-eco-600 focus:ring-eco-500">
+                            <span class="text-xs text-slate-600">Accetto i <a href="#" class="text-eco-600 underline">Termini & Condizioni</a> e la Privacy Policy.</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="checkbox" id="reg-newsletter" checked class="rounded text-eco-600 focus:ring-eco-500">
+                            <span class="text-xs text-slate-600">Desidero ricevere la newsletter "Eco-Tech Updates".</span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="w-full py-3 bg-eco-600 hover:bg-eco-700 text-white rounded-xl font-bold text-sm shadow-md transition-all mt-2">
+                        Crea il Mio Account Eco
+                    </button>
+                </form>
+
+                <!-- FORM ACCEDI -->
+                <form id="form-login" onsubmit="handleLogin(event)" class="space-y-4 hidden">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Indirizzo Email</label>
+                        <input type="email" id="login-email" required placeholder="mario.rossi@example.com" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-200 focus:border-eco-500 focus:ring-2 focus:ring-eco-500/20 outline-none transition-all">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Password</label>
+                        <input type="password" id="login-pass" required placeholder="La tua password" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-200 focus:border-eco-500 focus:ring-2 focus:ring-eco-500/20 outline-none transition-all">
+                    </div>
+
+                    <div class="flex items-center justify-between text-xs">
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="checkbox" checked class="rounded text-eco-600 focus:ring-eco-500">
+                            <span class="text-slate-600">Ricordami</span>
+                        </label>
+                        <a href="#" onclick="showToast('Info', 'Funzione di recupero inviata all\'email inserita', 'info'); return false;" class="text-eco-600 hover:underline">Password dimenticata?</a>
+                    </div>
+
+                    <button type="submit" class="w-full py-3 bg-eco-600 hover:bg-eco-700 text-white rounded-xl font-bold text-sm shadow-md transition-all mt-2">
+                        Accedi al Tuo Account
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PROFILO UTENTE / WISHLIST -->
+    <div id="profile-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
+        <div class="bg-white rounded-3xl max-w-2xl w-full shadow-2xl overflow-hidden border border-eco-100 flex flex-col max-h-[90vh]">
+            
+            <div class="bg-gradient-to-r from-eco-900 to-eco-700 p-6 text-white relative">
+                <button onclick="closeProfileModal()" class="absolute top-5 right-5 text-eco-200 hover:text-white p-1 rounded-xl bg-white/10 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+                
+                <div class="flex items-center space-x-4">
+                    <div id="prof-avatar" class="w-16 h-16 rounded-2xl bg-white text-eco-900 font-extrabold text-2xl flex items-center justify-center shadow-lg">
+                        U
+                    </div>
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <h2 id="prof-name" class="text-xl font-extrabold">Nome Utente</h2>
+                            <span class="px-2.5 py-0.5 rounded-full bg-emerald-400 text-eco-900 font-bold text-[10px] uppercase tracking-wider">Eco Pioneer</span>
+                        </div>
+                        <p id="prof-email" class="text-xs text-eco-100 font-light mt-0.5">email@example.com</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Nav Tabs -->
+            <div class="bg-eco-50 border-b border-eco-100 px-6 py-2 flex space-x-4">
+                <button id="prof-tab-details" onclick="switchProfileTab('details')" class="px-4 py-2 text-xs font-bold text-eco-900 border-b-2 border-eco-600">Dettagli Account</button>
+                <button id="prof-tab-wishlist" onclick="switchProfileTab('wishlist')" class="px-4 py-2 text-xs font-semibold text-slate-500 hover:text-eco-900">I Miei Preferiti (<span id="prof-wishlist-count">0</span>)</button>
+            </div>
+
+            <!-- Profile Content Area -->
+            <div class="p-6 overflow-y-auto flex-grow space-y-6">
+                
+                <!-- TAB DETAILS -->
+                <div id="prof-section-details" class="space-y-6">
+                    <!-- Points & Reward Banner -->
+                    <div class="bg-gradient-to-br from-emerald-50 to-eco-100 rounded-2xl p-5 border border-emerald-200 flex items-center justify-between">
+                        <div class="space-y-1">
+                            <span class="text-xs font-bold text-eco-800 uppercase tracking-wider">Saldo Eco-Rewards</span>
+                            <div class="text-3xl font-black text-eco-900 flex items-center space-x-2">
+                                <span>🌱</span>
+                                <span id="prof-points-val">150</span>
+                                <span class="text-xs font-normal text-slate-600">Punti Accumulati</span>
+                            </div>
+                            <p class="text-xs text-slate-600">Usa i tuoi punti al checkout per sconti esclusivi sui capi rigenerati.</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                            <span class="block text-[11px] font-bold text-slate-400 uppercase">Categoria Preferita</span>
+                            <span id="prof-fav-cat-val" class="text-sm font-bold text-eco-900 mt-1 block">Maglie</span>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                            <span class="block text-[11px] font-bold text-slate-400 uppercase">Stato Iscrizione</span>
+                            <span class="text-sm font-bold text-emerald-600 mt-1 block flex items-center space-x-1">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                <span>Attivo (Incentivo Eco)</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB WISHLIST -->
+                <div id="prof-section-wishlist" class="space-y-4 hidden">
+                    <p class="text-xs text-slate-500">I prodotti salvati nei tuoi preferiti compaiono qui per un rapido accesso.</p>
+                    <div id="wishlist-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <!-- Popolato dinamicamente via JS -->
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Footer Action -->
+            <div class="p-4 bg-slate-50 border-t border-slate-100 flex justify-between items-center">
+                <button onclick="logout()" class="px-4 py-2 bg-red-100 hover:bg-red-200 text-red-700 text-xs font-bold rounded-xl transition-colors">
+                    Disconnetti Account
+                </button>
+                <button onclick="closeProfileModal()" class="px-5 py-2 bg-eco-600 hover:bg-eco-700 text-white text-xs font-bold rounded-xl transition-colors">
+                    Chiudi
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- LOGIC / JAVASCRIPT SYSTEM -->
+    <script>
+        // DATA CATEGORIE E PRODOTTI
+        const categoryData = {
+            maglie: {
+                title: "Maglie & Felpe Sostenibili",
+                desc: "Realizzate in cotone rigenerato da scarti di tessitura e vecchi indumenti lavorati tramite algoritmi IA avanzati per il recupero delle fibre.",
+                products: [
+                    { id: "m1", name: "Felpa Eco Casual Classic", material: "Cotone rigenerato al 90%", price: "€ 49,00", image: "https://placehold.co/400x400/e1f0e6/1b5e20?text=Felpa+Eco" },
+                    { id: "m2", name: "Maglia Girocollo Minimal", material: "Cotone e Lana rigenerata", price: "€ 39,00", image: "https://placehold.co/400x400/e1f0e6/1b5e20?text=Maglia+Girocollo" },
+                    { id: "m3", name: "Hoodie Tecnologica AI", material: "Cotone rigenerato & Plastica riciclata", price: "€ 65,00", image: "https://placehold.co/400x400/e1f0e6/1b5e20?text=Hoodie+AI" }
+                ]
+            },
+            pantaloni: {
+                title: "Pantaloni & Tessuti Tecnici",
+                desc: "Resistenti, comodi e creati riutilizzando plastica post-consumo e filati ad alta durabilità.",
+                products: [
+                    { id: "p1", name: "Pantalone Chino Sostenibile", material: "Cotone rigenerato & Stretch eco", price: "€ 79,00", image: "https://placehold.co/400x400/e1f0e6/1b5e20?text=Chino+Eco" },
+                    { id: "p2", name: "Jeans Circolare Landi", material: "Denim rigenerato post-consumo", price: "€ 89,00", image: "https://placehold.co/400x400/e1f0e6/1b5e20?text=Jeans+Circolare" },
+                    { id: "p3", name: "Pantalone Tech Outdoor", material: "Plastica riciclata tecnica", price: "€ 75,00", image: "https://placehold.co/400x400/e1f0e6/1b5e20?text=Tech+Outdoor" }
+                ]
+            },
+            calzini: {
+                title: "Calzini & Accessori Filati",
+                desc: "Morbidezza estrema e traspirabilità garantite da filati riciclati selezionati con precisione algoritmica.",
+                products: [
+                    { id: "c1", name: "Set 3 Paia Calzini Comfort", material: "Cotone rigenerato morbido", price: "€ 15,00", image: "https://placehold.co/400x400/e1f0e6/1b5e20?text=Set+Calzini" },
+                    { id: "c2", name: "Calzini Sportivi Rinforzati", material: "Poliestere riciclato da reti", price: "€ 12,00", image: "https://placehold.co/400x400/e1f0e6/1b5e20?text=Calzini+Sport" },
+                    { id: "c3", name: "Calzini Invernali Lana Eco", material: "Lana riciclata dismessa", price: "€ 18,00", image: "https://placehold.co/400x400/e1f0e6/1b5e20?text=Calzini+Lana" }
+                ]
+            },
+            scarpe: {
+                title: "Scarpe & Calzature Ecologiche",
+                desc: "Suole stampate in 3D con plastica oceanica recuperata e tomaie in fibre tessili rigenerate.",
+                products: [
+                    { id: "s1", name: "Sneaker Urban Green", material: "Plastica riciclata & Suola eco 3D", price: "€ 119,00", image: "https://placehold.co/400x400/e1f0e6/1b5e20?text=Sneaker+Urban" },
+                    { id: "s2", name: "Scarpa Running Tech", material: "Reti da pesca rigenerate", price: "€ 129,00", image: "https://placehold.co/400x400/e1f0e6/1b5e20?text=Running+Tech" },
+                    { id: "s3", name: "Slip-On Minimalist", material: "Cotone rigenerato leggero", price: "€ 85,00", image: "https://placehold.co/400x400/e1f0e6/1b5e20?text=Slip-On" }
+                ]
+            },
+            cerimonia: {
+                title: "Abiti da Cerimonia Sostenibili",
+                desc: "Eleganza senza compromessi per i tuoi momenti speciali, realizzati con fibre pregiate rigenerate.",
+                products: [
+                    { id: "e1", name: "Abito Elegante Circolare", material: "Misto lana riciclata di alta qualità", price: "€ 290,00", image: "https://placehold.co/400x400/e1f0e6/1b5e20?text=Abito+Cerimonia" },
+                    { id: "e2", name: "Giacca Smoking Sostenibile", material: "Tessuto tecnico rigenerato IA", price: "€ 210,00", image: "https://placehold.co/400x400/e1f0e6/1b5e20?text=Giacca+Smoking" },
+                    { id: "e3", name: "Completo Formal Eco", material: "Cotone e poliestere rigenerato", price: "€ 260,00", image: "https://placehold.co/400x400/e1f0e6/1b5e20?text=Completo+Formal" }
+                ]
+            }
+        };
+
+        // STATO APPLICAZIONE PERSISTENTE
+        let currentUser = null;
+
+        // INIZIALIZZAZIONE
+        window.addEventListener('DOMContentLoaded', () => {
+            loadUserFromStorage();
+            updateUIState();
+        });
+
+        // PERSISTENZA LOCAL STORAGE
+        function loadUserFromStorage() {
+            const saved = localStorage.getItem('landi_user');
+            if (saved) {
+                try {
+                    currentUser = JSON.parse(saved);
+                    if (!currentUser.wishlist) currentUser.wishlist = [];
+                } catch (e) {
+                    currentUser = null;
+                }
+            }
+        }
+
+        function saveUserToStorage() {
+            if (currentUser) {
+                localStorage.setItem('landi_user', JSON.stringify(currentUser));
+            } else {
+                localStorage.removeItem('landi_user');
+            }
+            updateUIState();
+        }
+
+        // AGGIORNAMENTO UI DINAMICO
+        function updateUIState() {
+            const guestBtns = document.getElementById('auth-buttons-guest');
+            const userMenu = document.getElementById('auth-user-menu');
+            const mobileGuest = document.getElementById('mobile-guest-actions');
+            const mobileUser = document.getElementById('mobile-user-actions');
+
+            if (currentUser) {
+                // Utente Autenticato
+                guestBtns.classList.add('hidden');
+                userMenu.classList.remove('hidden');
+                mobileGuest.classList.add('hidden');
+                mobileUser.classList.remove('hidden');
+
+                // Dati Header
+                document.getElementById('user-display-name').textContent = currentUser.name;
+                document.getElementById('dropdown-user-email').textContent = currentUser.email;
+                document.getElementById('user-eco-points').textContent = `🌱 ${currentUser.points || 150} Punti`;
+                
+                // Iniziali Avatar
+                const initials = currentUser.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+                document.getElementById('user-avatar-initials').textContent = initials || 'U';
+
+                // Mobile
+                document.getElementById('mobile-user-name').textContent = currentUser.name;
+                document.getElementById('mobile-user-points').textContent = `🌱 ${currentUser.points || 150} Eco-Punti`;
+
+                // Wishlist Badges
+                const wCount = currentUser.wishlist ? currentUser.wishlist.length : 0;
+                document.getElementById('wishlist-count-badge').textContent = wCount;
+                document.getElementById('prof-wishlist-count').textContent = wCount;
+
+            } else {
+                // Utente Visitatore
+                guestBtns.classList.remove('hidden');
+                userMenu.classList.add('hidden');
+                mobileGuest.classList.remove('hidden');
+                mobileUser.classList.add('hidden');
+            }
+        }
+
+        // NAVIGAZIONE TRA VISTE
+        function switchView(viewName) {
+            const homeView = document.getElementById('view-home');
+            const categoryView = document.getElementById('view-category');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            if (viewName === 'home') {
+                homeView.classList.remove('hidden');
+                categoryView.classList.add('hidden');
+                updateActiveNav('home');
+            } else {
+                homeView.classList.add('hidden');
+                categoryView.classList.remove('hidden');
+                renderCategoryContent(viewName);
+                updateActiveNav(viewName);
+            }
+        }
+
+        function updateActiveNav(activeKey) {
+            const navKeys = ['home', 'maglie', 'pantaloni', 'calzini', 'scarpe', 'cerimonia'];
+            navKeys.forEach(k => {
+                const btn = document.getElementById(`nav-btn-${k}`);
+                if (btn) {
+                    if (k === activeKey) {
+                        btn.className = "px-3.5 py-2 rounded-xl text-sm font-bold transition-all bg-eco-100 text-eco-900";
+                    } else {
+                        btn.className = "px-3.5 py-2 rounded-xl text-sm font-medium transition-all text-slate-600 hover:text-eco-900 hover:bg-eco-50";
+                    }
+                }
+            });
+        }
+
+        // RENDERING PRODOTTI
+        function renderCategoryContent(catKey) {
+            const data = categoryData[catKey];
+            if (!data) return;
+
+            document.getElementById('cat-title').textContent = data.title;
+            document.getElementById('cat-desc').textContent = data.desc;
+
+            const grid = document.getElementById('cat-products-grid');
+            grid.innerHTML = '';
+
+            data.products.forEach(prod => {
+                const isFav = currentUser && currentUser.wishlist.includes(prod.id);
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-2xl border border-eco-100 overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between group";
+                card.innerHTML = `
+                    <div>
+                        <div class="h-52 overflow-hidden bg-eco-50 relative">
+                            <img src="${prod.image}" alt="${prod.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://placehold.co/400x400/2e7d32/ffffff?text=Landi+Dress'">
+                            <span class="absolute top-3 right-3 px-3 py-1 rounded-full bg-white/90 backdrop-blur-md text-xs font-bold text-eco-900 shadow-sm">
+                                ${prod.price}
+                            </span>
+                            <button onclick="toggleFavorite('${prod.id}')" class="absolute top-3 left-3 p-2 rounded-full bg-white/90 backdrop-blur-md text-slate-400 hover:text-rose-500 transition-colors shadow-sm">
+                                <svg class="w-5 h-5 ${isFav ? 'fill-rose-500 text-rose-500' : 'fill-none'}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                            </button>
+                        </div>
+                        <div class="p-6 space-y-2">
+                            <span class="inline-block text-[11px] font-bold text-eco-700 bg-eco-50 px-2.5 py-1 rounded-full border border-eco-100">${prod.material}</span>
+                            <h3 class="font-bold text-eco-900 text-lg leading-snug">${prod.name}</h3>
+                            <p class="text-xs text-slate-500">Certificato di sostenibilità circolare Landi Dress.</p>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0">
+                        <button onclick="handleProductDetail('${prod.name}')" class="w-full py-2.5 px-4 rounded-xl bg-eco-50 hover:bg-eco-600 hover:text-white text-eco-900 text-xs font-bold transition-colors border border-eco-200 hover:border-eco-600">
+                            Scopri Dettagli
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // AZIONE SUI PRODOTTI
+        function handleProductDetail(productName) {
+            if (currentUser) {
+                showToast('Dettagli Prodotto', `Ciao ${currentUser.name}, hai selezionato ${productName}. Il capo è pronto nei nostri laboratori eco.`, 'success');
+            } else {
+                showToast('Prodotto Selezionato', `${productName}: Registrati per sbloccare lo sconto Eco-Reward!`, 'info');
+            }
+        }
+
+        // TOGGLE FAVORITI / WISHLIST
+        function toggleFavorite(productId) {
+            if (!currentUser) {
+                showToast('Autenticazione richiesta', 'Accedi o registrati per salvare i tuoi prodotti preferiti.', 'warning');
+                openAuthModal('login');
+                return;
+            }
+
+            const index = currentUser.wishlist.indexOf(productId);
+            if (index > -1) {
+                currentUser.wishlist.splice(index, 1);
+                showToast('Rimosso', 'Prodotto rimosso dai preferiti.', 'info');
+            } else {
+                currentUser.wishlist.push(productId);
+                showToast('Aggiunto!', 'Prodotto aggiunto ai tuoi preferiti.', 'success');
+            }
+
+            saveUserToStorage();
+            
+            // Se siamo in vista categoria o profilo, aggiorna
+            const catView = document.getElementById('view-category');
+            if (!catView.classList.contains('hidden')) {
+                const currentNav = document.querySelector('[id^="nav-btn-"].bg-eco-100');
+                if (currentNav) {
+                    const catKey = currentNav.id.replace('nav-btn-', '');
+                    if (catKey !== 'home') renderCategoryContent(catKey);
+                }
+            }
+            renderWishlistItems();
+        }
+
+        // MODAL AUTH SYSTEM
+        function openAuthModal(tab = 'register') {
+            document.getElementById('auth-modal').classList.remove('hidden');
+            switchAuthTab(tab);
+        }
+
+        function closeAuthModal() {
+            document.getElementById('auth-modal').classList.add('hidden');
+        }
+
+        function switchAuthTab(tab) {
+            const regBtn = document.getElementById('tab-btn-register');
+            const loginBtn = document.getElementById('tab-btn-login');
+            const regForm = document.getElementById('form-register');
+            const loginForm = document.getElementById('form-login');
+
+            if (tab === 'register') {
+                regBtn.className = "w-1/2 py-2 rounded-xl text-xs font-bold transition-all bg-eco-600 text-white shadow-xs";
+                loginBtn.className = "w-1/2 py-2 rounded-xl text-xs font-bold transition-all text-slate-600 hover:text-eco-900";
+                regForm.classList.remove('hidden');
+                loginForm.classList.add('hidden');
+            } else {
+                loginBtn.className = "w-1/2 py-2 rounded-xl text-xs font-bold transition-all bg-eco-600 text-white shadow-xs";
+                regBtn.className = "w-1/2 py-2 rounded-xl text-xs font-bold transition-all text-slate-600 hover:text-eco-900";
+                loginForm.classList.remove('hidden');
+                regForm.classList.add('hidden');
+            }
+        }
+
+        // GESTIONE REGISTRAZIONE UTENTE
+        function handleRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById('reg-name').value.trim();
+            const email = document.getElementById('reg-email').value.trim();
+            const pass = document.getElementById('reg-pass').value;
+            const passConfirm = document.getElementById('reg-pass-confirm').value;
+            const favCategory = document.getElementById('reg-fav-cat').value;
+
+            if (pass !== passConfirm) {
+                showToast('Errore', 'Le password non coincidono.', 'warning');
+                return;
+            }
+
+            currentUser = {
+                name: name,
+                email: email,
+                favCategory: favCategory,
+                points: 150, // 150 Punti Eco in omaggio alla registrazione
+                wishlist: []
+            };
+
+            saveUserToStorage();
+            closeAuthModal();
+            showToast('Benvenuto!', `Registrazione completata con successo. Ti sono stati accreditati +150 Punti Eco-Reward!`, 'success');
+        }
+
+        // GESTIONE LOGIN
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value.trim();
+
+            currentUser = {
+                name: email.split('@')[0].replace('.', ' '),
+                email: email,
+                favCategory: 'Maglie',
+                points: 150,
+                wishlist: []
+            };
+
+            // Capitalizza nome
+            currentUser.name = currentUser.name.charAt(0).toUpperCase() + currentUser.name.slice(1);
+
+            saveUserToStorage();
+            closeAuthModal();
+            showToast('Bentornato!', `Accesso effettuato come ${currentUser.name}`, 'success');
+        }
+
+        // LOGOUT
+        function logout() {
+            currentUser = null;
+            saveUserToStorage();
+            closeProfileModal();
+            closeUserDropdown();
+            showToast('Disconnesso', 'Logout effettuato con successo.', 'info');
+        }
+
+        // MENU DROPDOWN UTENTE
+        function toggleUserDropdown() {
+            const dropdown = document.getElementById('user-dropdown');
+            dropdown.classList.toggle('hidden');
+        }
+
+        function closeUserDropdown() {
+            const dropdown = document.getElementById('user-dropdown');
+            if (dropdown) dropdown.classList.add('hidden');
+        }
+
+        // CHIUSURA DROPDOWN QUANDO SI CLICCA FUORI
+        document.addEventListener('click', (e) => {
+            const userMenu = document.getElementById('auth-user-menu');
+            if (userMenu && !userMenu.contains(e.target)) {
+                closeUserDropdown();
+            }
+        });
+
+        // MODAL PROFILO UTENTE
+        function openProfileModal(defaultTab = 'details') {
+            closeUserDropdown();
+            if (!currentUser) return;
+
+            document.getElementById('profile-modal').classList.remove('hidden');
+            document.getElementById('prof-name').textContent = currentUser.name;
+            document.getElementById('prof-email').textContent = currentUser.email;
+            document.getElementById('prof-points-val').textContent = currentUser.points || 150;
+            document.getElementById('prof-fav-cat-val').textContent = currentUser.favCategory || 'Maglie';
+
+            const initials = currentUser.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+            document.getElementById('prof-avatar').textContent = initials || 'U';
+
+            switchProfileTab(defaultTab);
+        }
+
+        function closeProfileModal() {
+            document.getElementById('profile-modal').classList.add('hidden');
+        }
+
+        function switchProfileTab(tab) {
+            const detTab = document.getElementById('prof-tab-details');
+            const wishTab = document.getElementById('prof-tab-wishlist');
+            const detSec = document.getElementById('prof-section-details');
+            const wishSec = document.getElementById('prof-section-wishlist');
+
+            if (tab === 'details') {
+                detTab.className = "px-4 py-2 text-xs font-bold text-eco-900 border-b-2 border-eco-600";
+                wishTab.className = "px-4 py-2 text-xs font-semibold text-slate-500 hover:text-eco-900";
+                detSec.classList.remove('hidden');
+                wishSec.classList.add('hidden');
+            } else {
+                wishTab.className = "px-4 py-2 text-xs font-bold text-eco-900 border-b-2 border-eco-600";
+                detTab.className = "px-4 py-2 text-xs font-semibold text-slate-500 hover:text-eco-900";
+                wishSec.classList.remove('hidden');
+                detSec.classList.add('hidden');
+                renderWishlistItems();
+            }
+        }
+
+        function renderWishlistItems() {
+            const container = document.getElementById('wishlist-grid');
+            container.innerHTML = '';
+
+            if (!currentUser || !currentUser.wishlist || currentUser.wishlist.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-400 italic col-span-2">Nessun prodotto nei preferiti. Clicca sul cuore nelle schede prodotto!</p>`;
+                return;
+            }
+
+            // Trova prodotti associati
+            let found = [];
+            Object.keys(categoryData).forEach(cat => {
+                categoryData[cat].products.forEach(p => {
+                    if (currentUser.wishlist.includes(p.id)) {
+                        found.push(p);
+                    }
+                });
+            });
+
+            found.forEach(p => {
+                const item = document.createElement('div');
+                item.className = "p-3 bg-white rounded-xl border border-slate-200 flex items-center justify-between";
+                item.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <img src="${p.image}" class="w-12 h-12 rounded-lg object-cover bg-eco-50">
+                        <div>
+                            <h4 class="text-xs font-bold text-eco-900">${p.name}</h4>
+                            <span class="text-[10px] text-slate-500">${p.price}</span>
+                        </div>
+                    </div>
+                    <button onclick="toggleFavorite('${p.id}')" class="text-xs text-red-500 hover:underline font-semibold">
+                        Rimuovi
+                    </button>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        // MOBILE MENU TOGGLE
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // NOTIFICHE TOAST DINAMICHE
+        function showToast(title, message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            
+            const toast = document.createElement('div');
+            toast.className = "pointer-events-auto bg-slate-900/95 text-white px-5 py-4 rounded-2xl shadow-2xl flex items-start space-x-3 animate-fade-in border border-slate-700 backdrop-blur-md";
+
+            let icon = '🌱';
+            if (type === 'warning') icon = '⚠️';
+            if (type === 'info') icon = '💡';
+
+            toast.innerHTML = `
+                <span class="text-xl leading-none">${icon}</span>
+                <div class="flex-grow">
+                    <p class="font-bold text-xs text-white">${title}</p>
+                    <p class="text-[11px] text-slate-300 mt-0.5">${message}</p>
+                </div>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+                setTimeout(() => toast.remove(), 300);
+            }, 3800);
+        }
+    </script>
+</body>
+</html>
