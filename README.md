@@ -13,7 +13,7 @@ sull'impatto ambientale dei capi.
 - **Gestione degli ordini**
 - **Tracciamento della spedizione** 
 ## Tabella dei prodotti
-
+|---|---|---|---|---|---|
 | CodiceProdotto | Prodotto | Categoria | Taglia | Prezzo | Disponibilità |
 | Eco-001 | T-Shirt in Cotone Biologico | Abbigliamento uomo | M | € 24,99 | Disponibile |
 | ECO-002 | Abito in Lino Naturale | Abbigliamento donna | S | € 65,00 | Disponibile |
