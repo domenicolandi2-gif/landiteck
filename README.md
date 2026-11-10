@@ -13,9 +13,9 @@ sull'impatto ambientale dei capi.
 - **Gestione degli ordini**
 - **Tracciamento della spedizione** 
 ## Tabella dei prodotti
-|---|---|---|---|---|---|
-| CodiceProdotto | Prodotto | Categoria | Taglia | Prezzo | Disponibilità |
-| Eco-001 | T-Shirt in Cotone Biologico | Abbigliamento uomo | M | € 24,99 | Disponibile |
+|  CodiceProdotto  |  Prodotto  |  Categoria  |  Taglia  | Prezzo  |  Disponibilità  |
+| --- | --- | --- | --- | --- | --- |
+|  Eco-001  |  T-Shirt in Cotone Biologico  |  Abbigliamento uomo  |  M  |  € 24,99  |  Disponibile  |
 | ECO-002 | Abito in Lino Naturale | Abbigliamento donna | S | € 65,00 | Disponibile |
 | ECO-003 | Zaino in Sughero Riciclato | Accessori | Unica | € 45,50 | In arrivo |
 | ECO-004 | Maglione in Lana Rigenerata | Abbigliamento uomo | L | € 79,90 | Disponibile |
